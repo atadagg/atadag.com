@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATADAG OS - Construction Map</title>
+    
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #0f172a;
+            --text: #e2e8f0;
+            --secondary: #94a3b8;
+            --accent: #3b82f6;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --taskbar: rgba(15, 23, 42, 0.9);
+            --window-header: #1e293b;
+            --window-border: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* OS Desktop Styles */
+        .os-desktop {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            padding: 1rem;
+            padding-bottom: 4rem;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Map Window */
+        .map-window {
+            position: absolute;
+            width: 90%;
+            height: 85%;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid var(--window-border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .window-header {
+            background: var(--window-header);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .window-title i {
+            color: var(--primary);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .window-control {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-close {
+            background: #ef4444;
+        }
+
+        .control-minimize {
+            background: #f59e0b;
+        }
+
+        .control-maximize {
+            background: #10b981;
+        }
+
+        .window-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Map Tabs */
+        .map-tabs {
+            display: flex;
+            background: var(--window-header);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 1rem;
+        }
+
+        .map-tab {
+            padding: 0.75rem 1.25rem;
+            color: var(--secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .map-tab.active {
+            color: var(--text);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .map-tab:hover:not(.active) {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .map-tab i {
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Toolbar */
+        .map-toolbar {
+            background: var(--window-header);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .category-filter {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+        }
+
+        .category-filter option {
+            background: var(--card-bg);
+        }
+
+        .add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--window-border);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            width: 300px;
+            max-width: 90%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .info-panel h2 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-panel h2 i {
+            color: var(--primary);
+        }
+
+        #construction-info {
+            font-size: 0.875rem;
+            color: var(--secondary);
+        }
+
+        #construction-info h3 {
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        #construction-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Taskbar */
+        .os-taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3.5rem;
+            background: var(--taskbar);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .os-start {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .os-start:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .os-start i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .os-taskbar-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .taskbar-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .taskbar-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .taskbar-icon i {
+            font-size: 1.25rem;
+            color: var(--text);
+        }
+
+        .os-time {
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .reboot-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .reboot-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .reboot-button i {
+            font-size: 1rem;
+        }
+
+        /* Leaflet Custom Styling */
+        .leaflet-container {
+            background: #1a2234;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 0.5rem;
+            border: 1px solid var(--window-border);
+        }
+
+        .leaflet-popup-tip {
+            background: var(--card-bg);
+            border: 1px solid var(--window-border);
+        }
+
+        /* Coming Soon Message */
+        .coming-soon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: var(--text);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--window-border);
+            z-index: 10;
+        }
+
+        .coming-soon h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .coming-soon p {
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .map-window {
+                width: 95%;
+                height: 90%;
+            }
+
+            .map-toolbar {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: flex-start;
+            }
+
+            .toolbar-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .info-panel {
+                width: 250px;
+            }
+
+            .os-start span {
+                display: none;
+            }
+
+            .map-tabs {
+                overflow-x: auto;
+                padding: 0;
+            }
+
+            .map-tab {
+                padding: 0.75rem 1rem;
+                white-space: nowrap;
+            }
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--window-border);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 0.75rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            font-size: 1.25rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .modal-header h2 i {
+            color: var(--primary);
+        }
+
+        .close {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary);
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--text);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.875rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.25rem;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group select option {
+            background: var(--card-bg);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="os-desktop">
+        <div class="map-window">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-map-location-dot"></i>
+                    <span>Istanbul Maps</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close" onclick="window.location.href='../../portfolio-post.html'"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="map-tabs">
+                    <a href="business-map.html" class="map-tab">
+                        <i class="fas fa-building"></i>
+                        <span>Business Centers</span>
+                    </a>
+                    <a href="construction-map.html" class="map-tab active">
+                        <i class="fas fa-hard-hat"></i>
+                        <span>Construction</span>
+                    </a>
+                    <a href="crime-map.html" class="map-tab">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Crime</span>
+                    </a>
+                    <a href="crash-map.html" class="map-tab">
+                        <i class="fas fa-car-crash"></i>
+                        <span>Crash</span>
+                    </a>
+                </div>
+                <div class="map-toolbar">
+                    <div class="toolbar-left">
+                        <select id="category-filter" class="category-filter">
+                            <option value="all">All Projects</option>
+                            <option value="road">Road Construction</option>
+                            <option value="building">Building Construction</option>
+                            <option value="bridge">Bridge & Tunnel</option>
+                            <option value="utility">Utility Work</option>
+                        </select>
+                        <button id="add-construction-btn" class="add-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Submit Construction Site</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <div id="map"></div>
+                    <div class="coming-soon">
+                        <h2><i class="fas fa-hard-hat"></i> Coming Soon</h2>
+                        <p>The Construction Map is currently under development.</p>
+                        <p>Check back later for updates on construction projects across Istanbul.</p>
+                    </div>
+                    <div class="info-panel">
+                        <h2><i class="fas fa-info-circle"></i> Construction Information</h2>
+                        <div id="construction-info">
+                            Select a marker to see construction site details
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Form -->
+        <div id="submit-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-hard-hat"></i> Submit Construction Site</h2>
+                    <span class="close">&times;</span>
+                </div>
+                <form id="construction-form">
+                    <div class="form-group">
+                        <label for="name">Project Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" name="category" required>
+                            <option value="road">Road Construction</option>
+                            <option value="building">Building Construction</option>
+                            <option value="bridge">Bridge & Tunnel</option>
+                            <option value="utility">Utility Work</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Location/Address:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">District:</label>
+                        <input type="text" id="district" name="district" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Project Description:</label>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">Expected Completion Date:</label>
+                        <input type="date" id="end_date" name="end_date" required>
+                    </div>
+                    <div class="form-group" style="display: none;">
+                        <label>Click on the map to set the location</label>
+                        <input type="hidden" id="coordinates" name="coordinates" value="[0, 0]">
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Construction Site</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="os-taskbar">
+            <div class="os-start">
+                <i class="fas fa-microchip"></i>
+                <span>ATADAG</span>
+            </div>
+            <div class="os-taskbar-icons">
+                <div class="taskbar-icon">
+                    <i class="fas fa-map-location-dot"></i>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="../../index.html" class="reboot-button">
+                    <i class="fas fa-power-off"></i>
+                    <span>REBOOT</span>
+                </a>
+                <div class="os-time" id="os-clock">00:00</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    
+    <script>
+        // Initialize the map centered on Istanbul
+        const map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([41.0082, 28.9784], 11);
+
+        // Add custom dark mode tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        // Add zoom control to the top-right
+        L.control.zoom({
+            position: 'topright'
+        }).addTo(map);
+
+        // Add attribution control to the bottom-right
+        L.control.attribution({
+            position: 'bottomright'
+        }).addTo(map);
+
+        // OS Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('os-clock').textContent = `${hours}:${minutes}`;
+        }
+        
+        updateClock();
+        setInterval(updateClock, 60000);
+
+        // Make window draggable
+        const mapWindow = document.querySelector('.map-window');
+        const header = document.querySelector('.window-header');
+        
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        
+        header.onmousedown = dragMouseDown;
+        
+        function dragMouseDown(e) {
+            e.preventDefault();
+            // Get mouse position at startup
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // Call function when mouse moves
+            document.onmousemove = elementDrag;
+        }
+        
+        function elementDrag(e) {
+            e.preventDefault();
+            // Calculate new position
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // Set element's new position
+            mapWindow.style.top = (mapWindow.offsetTop - pos2) + "px";
+            mapWindow.style.left = (mapWindow.offsetLeft - pos1) + "px";
+        }
+        
+        function closeDragElement() {
+            // Stop moving when mouse button is released
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+
+        // Modal elements
+        const modal = document.getElementById('submit-modal');
+        const addButton = document.getElementById('add-construction-btn');
+        const closeButton = document.getElementsByClassName('close')[0];
+        const form = document.getElementById('construction-form');
+        let tempMarker = null;
+        
+        // Custom icon for markers
+        const customIcon = L.icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
+
+        // Open modal when add button is clicked
+        addButton.addEventListener('click', function() {
+            modal.style.display = 'block';
+        });
+
+        // Close modal when X is clicked
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+            if (tempMarker) {
+                map.removeLayer(tempMarker);
+                tempMarker = null;
+            }
+        });
+
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                if (tempMarker) {
+                    map.removeLayer(tempMarker);
+                    tempMarker = null;
+                }
+            }
+        });
+
+        // Handle map click for setting location
+        map.on('click', function(e) {
+            // Disabled map click location setting
+            /*
+            if (modal.style.display === 'block') {
+                const { lat, lng } = e.latlng;
+                
+                // Update hidden input
+                document.getElementById('coordinates').value = `[${lat}, ${lng}]`;
+                
+                // Add temporary marker
+                if (tempMarker) {
+                    map.removeLayer(tempMarker);
+                }
+                
+                tempMarker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
+            }
+            */
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(form);
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+            
+            // Send data to Google Sheets
+            fetch('https://script.google.com/macros/s/AKfycbyEWRc5H3qvQhgddVEPGoGEf7wXQ6sTFWwU-oBHSfYTi9eAObLSbwezDsTNraqyl2Jx/exec', {
+                method: 'POST',
+                body: JSON.stringify(formObject),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Construction site submitted successfully!');
+                } else {
+                    alert('There was an error submitting the form. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error submitting the form. Please try again.');
+            })
+            .finally(() => {
+                // Close modal and clean up
+                modal.style.display = 'none';
+                if (tempMarker) {
+                    map.removeLayer(tempMarker);
+                    tempMarker = null;
+                }
+                form.reset();
+            });
+        });
+    </script>
+</body>
+</html> 

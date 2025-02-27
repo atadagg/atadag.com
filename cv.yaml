@@ -1,0 +1,182 @@
+cv:
+  name: 'Ata Tan DAGIDIR'
+  location: 'Istanbul, Türkiye'
+  email: 'atadagidir@gmail.com'
+  phone: '+90-553-096-6227'
+  website: 'https://www.fidelioware.com/'
+  social_networks:
+    - network: 'GitHub'
+      username: 'atadagg'
+    - network: 'LinkedIn'
+      username: 'ata-dagidir'
+  sections:
+    education:
+      - institution: 'Ozyegin University'
+        area: 'Computer Science (English)'
+        degree: 'BS'
+        start_date: '2021-09'
+        end_date: '2026-06'
+        highlights:
+          - 'GPA: 3.36/4.00 (%100 Scholarship)'
+          - 'Top of the class in Algorithms and Data Structures'
+      - institution: 'Ozyegin University'
+        area: 'Industrial Design (English)'
+        degree: 'BS'
+        start_date: '2021-09'
+        end_date: '2026-06'
+        highlights:
+          - 'GPA: 3.05/4.00 (%100 Scholarship)'
+          - "Pursuing Double Bachelor's Degree (Currently 3rd Year)"
+    experience:
+      - company: 'Fidelio'
+        position: 'Co-Founder'
+        location: 'Istanbul'
+        start_date: '2024-06'
+        end_date: 'present'
+        highlights:
+          - 'Founded and scaled software agency, delivering 3 commercial websites with custom CMS solutions'
+          - 'Built and deployed 2 commercial web applications with 99.9% uptime'
+          - 'Led full-stack development and DevOps using React, Next.js, Node.js, MongoDB stack and DigitalOcean, Bash, Linux, Cloudflare'
+      - company: 'Ozyegin University'
+        position: 'Undergraduate Research Assistant'
+        location: 'Istanbul'
+        start_date: '2024-12'
+        end_date: 'present'
+        highlights:
+          - 'Working on developing NLP models for Turkish language with Prof. Olcay Taner Yildiz'
+      - company: 'Ozyegin University'
+        position: 'Teaching Assistant'
+        location: 'Istanbul'
+        start_date: '2024-06'
+        end_date: '2024-06'
+        highlights:
+          - 'Led recitation sessions for 20+ engineering students in MATH 103 (Calculus for Engineers)'
+          - 'Demonstrated strong communication skills through one-on-one student mentoring'
+      - company: 'Suitso'
+        position: 'Full Stack Developer Intern'
+        location: 'Istanbul'
+        start_date: '2022-03'
+        end_date: '2022-08'
+        highlights:
+          - 'Developed full-stack features using JavaScript, Node.js, and MySQL for an e-commerce platform'
+          - 'Contributed to an enterprise pathfinding solution currently deployed by a major security company'
+          - "Developed test suites for a national foundation's election system (used by 10,000+ members)"
+    projects:
+      - name: 'Lowballer AI'
+        date: '2025-01'
+        highlights:
+          - 'Developed an AI system for automated second-hand goods trading, monitoring markets for price inefficiencies'
+          - 'Implements ML for market analysis and NLP for buyer/seller interactions'
+          - 'Tools: Python, Selenium, BeautifulSoup, Pandas, MySQL, FastAPI, Docker, PyTorch'
+      - name: 'Vim Teacher'
+        date: '2024-01'
+        highlights:
+          - 'Developed an Android app to teach users Vim through an interactive, gamified learning experience'
+          - 'Tools: Kotlin, Firebase, MVVM Architecture'
+      - name: 'Multi-Platform CMS'
+        date: '2024-01'
+        highlights:
+          - 'Developed a unified posting system integrating with three social media APIs'
+          - 'Tools: React, TypeScript, Node.js, OAuth'
+    certifications:
+      - name: 'CS50: Introduction to Computer Science'
+        location: 'Harvard University'
+        date: '2022-02'
+        highlights:
+          - 'Skills: C Programming, Algorithms, Data Structures, Problem-Solving'
+      - name: 'Google UX Design Certificate'
+        location: 'Google'
+        date: '2021-12'
+        highlights:
+          - 'Skills: Figma, User Research, User-Centered Design, Design Thinking'
+    skills:
+      - label: 'Programming'
+        details: 'TypeScript/JavaScript, Python, Java, C++, SQL, React, Data Structures And Algorithms, HTML/CSS, REST API, Kotlin, Node.js, PyTorch, Selenium'
+      - label: 'DevOps'
+        details: 'DigitalOcean, Azure, Docker, Apache, Bash, CI/CD, Git, Cloudflare, Vercel'
+      - label: 'Design'
+        details: 'Technical Drawing, Fusion 360, Color Theory, Human Computer Interaction, UX Research'
+    languages:
+      - label: 'Turkish'
+        details: 'Native'
+      - label: 'English'
+        details: 'Near-native Proficiency (YDS A Score)'
+      - label: 'Japanese'
+        details: 'Beginner'
+    interests:
+      - label: 'Technical'
+        details: 'Human-Computer Interaction, Statistics, Open Source, Negotiation Agents'
+      - label: 'Other'
+        details: 'Sci-fi, Writing, Linguistics, History, Underground Art, Music Producing, Gymnastics, Ney'
+design:
+  theme: 'sb2nov'
+  font: 'Charter'
+  font_size: '11pt'
+  page_size: 'letterpaper'
+  color: ''
+  disable_external_link_icons: false
+  disable_page_numbering: false
+  page_numbering_style: 'NAME - Page PAGE_NUMBER of TOTAL_PAGES'
+  disable_last_updated_date: false
+  last_updated_date_style: 'Last updated in TODAY'
+  header_font_size: '24pt'
+  text_alignment: 'justified'
+  seperator_between_connections: ''
+  use_icons_for_connections: true
+  margins:
+    page:
+      top: '2 cm'
+      bottom: '2 cm'
+      left: '2 cm'
+      right: '2 cm'
+    section_title:
+      top: '0.3 cm'
+      bottom: '0.2 cm'
+    entry_area:
+      left_and_right: '0.2 cm'
+      vertical_between: '0.2 cm'
+      date_and_location_width: '4.5 cm'
+    highlights_area:
+      top: '0.10 cm'
+      left: '0.4 cm'
+      vertical_between_bullet_points: '0.10 cm'
+    header:
+      vertical_between_name_and_connections: '0.3 cm'
+      bottom: '0.3 cm'
+      horizontal_between_connections: '0.5 cm'
+locale_catalog:
+  phone_number_format: 'national'
+  date_style: 'MONTH_ABBREVIATION YEAR'
+  abbreviations_for_months:
+    - 'Jan'
+    - 'Feb'
+    - 'Mar'
+    - 'Apr'
+    - 'May'
+    - 'Jun'
+    - 'Jul'
+    - 'Aug'
+    - 'Sep'
+    - 'Oct'
+    - 'Nov'
+    - 'Dec'
+  full_names_of_months:
+    - 'January'
+    - 'February'
+    - 'March'
+    - 'April'
+    - 'May'
+    - 'June'
+    - 'July'
+    - 'August'
+    - 'September'
+    - 'October'
+    - 'November'
+    - 'December'
+  month: 'month'
+  months: 'months'
+  year: 'year'
+  years: 'years'
+  present: 'present'
+  to: 'to'
+

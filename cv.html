@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATADAG BIOS Setup</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="screen">
+        <div class="bios-container">
+            <header class="bios-header">
+                <div class="bios-title">ATADAG BIOS Setup Utility - Copyright (C) 2003</div>
+                <div class="bios-info">
+                    <span class="memory">MEMORY: 640K OK</span>
+                    <span class="cpu">BRAIN: 4.2 GHz</span>
+                </div>
+            </header>
+
+            <main class="bios-content">
+                <div class="menu-container">
+                    <div class="menu-section" id="main-menu">
+                        <h2 class="section-header">Main Menu</h2>
+                        <ul class="menu-items">
+                            <li class="menu-item active" data-section="about">► Standard System Configuration</li>
+                            <li class="menu-item" data-section="education">► Education Setup</li>
+                            <li class="menu-item" data-section="skills">► Advanced Skillset Features</li>
+                            <li class="menu-item" data-section="projects">► Project Management Setup</li>
+                            <li class="menu-item" data-section="experience">► Work Experience Status</li>
+                            <li class="menu-item" data-section="certifications">► Certification Registry</li>
+                            <li class="menu-item" data-section="contact">► Communication Settings</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-section" id="about">
+                        <h2 class="section-header">System Configuration</h2>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <span class="label">System Name:</span>
+                                <span class="value" id="about-name">Ata Tan DAGIDIR</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Location:</span>
+                                <span class="value" id="about-location">Istanbul, Türkiye</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Primary OS:</span>
+                                <span class="value">Computer Science v3.36</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Secondary OS:</span>
+                                <span class="value">Industrial Design v3.05</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Institution:</span>
+                                <span class="value">Ozyegin University</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Status:</span>
+                                <span class="value">[ACTIVE] Double Major Program</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Scholarship:</span>
+                                <span class="value">[ENABLED] 100%</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Expected Graduation:</span>
+                                <span class="value">Jun 2026</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="education">
+                        <h2 class="section-header">Education Setup</h2>
+                        <div class="education-list">
+                            <!-- Education will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="skills">
+                        <h2 class="section-header">Advanced Skillset Features</h2>
+                        <div class="skills-grid">
+                            <!-- Skills will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="projects">
+                        <h2 class="section-header">Project Management Setup</h2>
+                        <div class="projects-list">
+                            <!-- Projects will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="experience">
+                        <h2 class="section-header">Work Experience Status</h2>
+                        <div class="experience-list">
+                            <!-- Experience will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="certifications">
+                        <h2 class="section-header">Certification Registry</h2>
+                        <div class="certifications-list">
+                            <!-- Certifications will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <div class="content-section hidden" id="contact">
+                        <h2 class="section-header">Communication Settings</h2>
+                        <div class="contact-info">
+                            <div class="info-row">
+                                <span class="label">Primary Email:</span>
+                                <span class="value" id="contact-email">atadagidir@gmail.com</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Phone:</span>
+                                <span class="value" id="contact-phone">+90-553-096-6227</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Website:</span>
+                                <span class="value" id="contact-website">https://www.fidelioware.com/</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Version Control:</span>
+                                <span class="value" id="contact-github">github.com/atadagg</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Professional Net:</span>
+                                <span class="value" id="contact-linkedin">linkedin.com/in/ata-dagidir</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="bios-footer">
+                <div class="key-commands">
+                    <span>[↑↓] Select Item</span>
+                    <span>[Enter] Select Menu</span>
+                    <span>[Esc] Exit</span>
+                    <span>[F10] Save and Exit</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html> 

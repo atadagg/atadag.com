@@ -1,0 +1,20 @@
+
+Business:
+We'll be recording all the business centers(iş hanları) of Istanbul and what they sell
+We also need form submitting for community submitting new places
+
+Future: Reviews/tips for the business centers,how to not get scammed
+
+
+Construction Map:
+Get the places available for construction from sources like municipality,
+Then mark the areas available
+Same submit form will work here too
+
+
+Car Crash Map:
+This'll be a heat map, mapping all the crashes in Istanbul.
+https://www.sbm.org.tr/tr/uygulama/kaza-yogunluk-haritasi-20
+
+Crime Map:
+Mark the criminal areas

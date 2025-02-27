@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATADAG SYSTEM BOOT</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #ffff00;
+            --text-success: #00ff00;
+            --text-error: #ff0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Mono', monospace;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .boot-screen {
+            padding: 2rem;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .boot-content {
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+            animation-delay: 0.5s;
+        }
+
+        .post-message {
+            margin-bottom: 1rem;
+            white-space: pre-line;
+        }
+
+        .memory-check {
+            color: var(--text-success);
+        }
+
+        .boot-options {
+            margin-top: 2rem;
+            border: 1px solid var(--text-primary);
+            padding: 1rem;
+        }
+
+        .boot-option {
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .boot-option:hover,
+        .boot-option.selected {
+            color: var(--text-secondary);
+        }
+
+        .boot-option::before {
+            content: "";
+            display: inline-block;
+            width: 1rem;
+        }
+
+        .boot-option.selected::before {
+            content: "►";
+        }
+
+        .boot-instructions {
+            margin-top: 2rem;
+            color: var(--text-secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1em;
+            background-color: var(--text-primary);
+            animation: blink 1s infinite;
+            margin-left: 0.2em;
+            vertical-align: middle;
+        }
+
+        .error-message {
+            color: var(--text-error);
+        }
+
+        .success-message {
+            color: var(--text-success);
+        }
+
+        .boot-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .boot-transition.active {
+            display: flex;
+        }
+
+        .boot-transition img {
+            max-width: 200px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .boot-transition.show-logo img {
+            opacity: 1;
+        }
+
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            display: none;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .loading-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            height: 100%;
+            width: 50%;
+            background: linear-gradient(90deg, 
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                #2563eb,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            animation: loading 1.5s ease infinite;
+        }
+
+        @keyframes loading {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        .loading-bar.active {
+            display: block;
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="boot-transition">
+        <img src="assets/logo.png" alt="ATADAG Logo">
+        <div class="loading-bar"></div>
+    </div>
+    <div class="boot-screen">
+        <div class="boot-content">
+            <div class="post-message">
+ATADAG TECHNOLOGIES, INC.
+=========================
+BIOS Date: 01/24/24 Ver: 1.0.0
+CPU: BRAIN 4.2 GHz
+Memory Testing... <span class="memory-check">640K OK</span>
+
+Award BootBlock BIOS v1.0
+Copyright (C) 2003, ATADAG Tech.
+
+Detecting Primary Master... <span class="success-message">PORTFOLIO DRIVE</span>
+Detecting Primary Slave...  <span class="success-message">CV SYSTEM</span>
+Detecting Talent Metrics... <span class="success-message"></span>EXCEPTIONAL</span>
+
+FIDELIO Security Systems... <span class="success-message">ENABLED</span>
+
+Loading Boot Options...</div>
+
+            <div class="boot-options">
+                <div class="boot-option" data-option="cv">1. Boot CV BIOS Setup</div>
+                <div class="boot-option" data-option="portfolio">2. Boot ATADAG OS (Portfolio)</div>
+            </div>
+
+            <div class="boot-instructions">
+                Use [↑][↓] to select, [Enter] to boot system
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOption = 0;
+        const options = document.querySelectorAll('.boot-option');
+        const bootTransition = document.querySelector('.boot-transition');
+
+        function updateSelection() {
+            options.forEach((option, index) => {
+                option.classList.toggle('selected', index === currentOption);
+            });
+        }
+
+        async function handleBoot(selectedOption) {
+            bootTransition.classList.add('active');
+            
+            if (selectedOption === 'portfolio') {
+                // Portfolio OS boot sequence
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Initial black screen
+                bootTransition.classList.add('show-logo');
+                bootTransition.querySelector('.loading-bar').classList.add('active');
+                await new Promise(resolve => setTimeout(resolve, 4000)); // Show logo and loading bar longer
+                window.location.href = 'portfolio.html';
+            } else {
+                // CV BIOS boot sequence - just black screen
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                window.location.href = 'cv.html';
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowUp':
+                    currentOption = (currentOption - 1 + options.length) % options.length;
+                    updateSelection();
+                    break;
+                case 'ArrowDown':
+                    currentOption = (currentOption + 1) % options.length;
+                    updateSelection();
+                    break;
+                case 'Enter':
+                    const selectedOption = options[currentOption].getAttribute('data-option');
+                    handleBoot(selectedOption);
+                    break;
+            }
+        });
+
+        // Simulate typing effect for POST messages
+        function typeWriter(element, text, index = 0) {
+            if (index < text.length) {
+                element.innerHTML = text.substring(0, index + 1) + '<span class="cursor"></span>';
+                setTimeout(() => typeWriter(element, text, index + 1), 20);
+            }
+        }
+
+        // Initialize
+        updateSelection();
+        const postMessage = document.querySelector('.post-message');
+        typeWriter(postMessage, postMessage.textContent);
+
+        // Handle click events
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const selectedOption = option.getAttribute('data-option');
+                handleBoot(selectedOption);
+            });
+        });
+    </script>
+</body>
+</html>

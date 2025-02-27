@@ -1,0 +1,493 @@
+:root {
+    --background: #000080;
+    --text-primary: #ffffff;
+    --text-secondary: #ffff00;
+    --highlight: #ffffff;
+    --menu-bg: rgba(255, 255, 255, 0.1);
+    --border-color: #ffffff;
+    --header-bg: #000080;
+    --content-bg: #000080;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+body {
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.screen {
+    position: relative;
+    height: 100vh;
+    padding: 20px;
+    background-color: var(--background);
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.scanline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgba(0, 255, 0, 0.2),
+        transparent
+    );
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+}
+
+.bios-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid var(--border-color);
+    background-color: var(--content-bg);
+    min-height: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+}
+
+.bios-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    background-color: var(--header-bg);
+}
+
+.bios-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.bios-info {
+    display: flex;
+    gap: 20px;
+    color: var(--text-primary);
+}
+
+.bios-content {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+}
+
+.menu-container {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+}
+
+.menu-section {
+    flex: 0 0 300px;
+    background-color: var(--background);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.section-header {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.menu-items {
+    list-style: none;
+}
+
+.menu-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    color: var(--text-primary);
+    position: relative;
+}
+
+.menu-item.active,
+.menu-item:hover {
+    color: var(--text-secondary);
+    background-color: var(--menu-bg);
+}
+
+.menu-item.active::before {
+    content: "►";
+    position: absolute;
+    left: 0;
+    color: var(--text-secondary);
+}
+
+.content-section {
+    flex: 1;
+    background-color: var(--background);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    overflow-y: auto;
+    max-height: calc(100vh - 250px);
+}
+
+.content-section.hidden {
+    display: none;
+}
+
+.info-grid,
+.skills-grid,
+.projects-list,
+.experience-list,
+.education-list,
+.certifications-list,
+.contact-info {
+    display: grid;
+    gap: 15px;
+}
+
+.info-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px;
+    align-items: center;
+}
+
+.label {
+    color: var(--text-primary);
+}
+
+.value {
+    color: var(--text-secondary);
+}
+
+.bios-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.key-commands {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.key-commands span {
+    color: var(--text-secondary);
+}
+
+/* Project styles */
+.project-item {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.project-title {
+    color: var(--text-secondary);
+}
+
+.project-status,
+.project-specs,
+.project-date {
+    color: var(--text-primary);
+}
+
+/* Experience styles */
+.experience-item {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.experience-header {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.period,
+.description {
+    color: var(--text-primary);
+}
+
+/* Skills styles */
+.skill-category {
+    margin-bottom: 20px;
+}
+
+.skill-category-title {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.skill-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.skill-item {
+    padding: 5px 10px;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* CRT effect */
+.screen::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+        circle at center,
+        transparent 0,
+        rgba(0, 0, 0, 0.2) 100%
+    );
+    pointer-events: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .menu-container {
+        flex-direction: column;
+    }
+
+    .menu-section,
+    .content-section {
+        flex: none;
+    }
+
+    .content-section {
+        max-height: 60vh;
+    }
+
+    .bios-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .key-commands {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Startup Terminal */
+.startup-terminal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--background);
+    color: var(--text-primary);
+    padding: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    z-index: 2000;
+    border: 1px solid var(--border-color);
+    width: 80%;
+    max-width: 600px;
+}
+
+.startup-terminal::after {
+    content: "_";
+    animation: blink 1s infinite;
+    color: var(--text-secondary);
+}
+
+/* Text Effects */
+.project-status,
+.experience-status {
+    color: var(--text-secondary);
+}
+
+[class*="status"]::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+[class*="status"][data-status="ACTIVE"]::before,
+[class*="status"][data-status="RUNNING"]::before {
+    background-color: #00ff00;
+}
+
+[class*="status"][data-status="COMPLETED"]::before {
+    background-color: #0066ff;
+}
+
+[class*="status"][data-status="STABLE"]::before {
+    background-color: #00ccff;
+}
+
+/* Screen transition */
+.screen {
+    transition: opacity 0.5s ease;
+}
+
+/* Additional CRT effects */
+@keyframes flicker {
+    0% { opacity: 0.99; }
+    5% { opacity: 0.98; }
+    10% { opacity: 0.97; }
+    15% { opacity: 0.98; }
+    20% { opacity: 0.99; }
+    100% { opacity: 1; }
+}
+
+.screen {
+    animation: flicker 8s infinite;
+}
+
+.bios-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.bios-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.05) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Improved section transitions */
+.content-section {
+    transition: opacity 0.3s ease;
+}
+
+.content-section.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Additional responsive styles */
+@media (max-width: 480px) {
+    .bios-info {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .startup-terminal {
+        width: 95%;
+        font-size: 12px;
+    }
+}
+
+/* Education styles */
+.education-item {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.education-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.degree {
+    color: var(--text-secondary);
+    font-weight: bold;
+}
+
+.institution {
+    color: var(--text-primary);
+}
+
+.education-info {
+    color: var(--text-primary);
+}
+
+.highlights {
+    margin-top: 10px;
+}
+
+.highlight {
+    margin-bottom: 5px;
+}
+
+/* Certification styles */
+.certification-item {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+}
+
+.certification-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.certification-title {
+    color: var(--text-secondary);
+    font-weight: bold;
+}
+
+.certification-issuer {
+    color: var(--text-primary);
+}
+
+.certification-info {
+    color: var(--text-primary);
+}
+
+.certification-date,
+.certification-skills {
+    margin-bottom: 5px;
+} 

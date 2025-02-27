@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATADAG OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #0f172a;
+            --text: #e2e8f0;
+            --secondary: #94a3b8;
+            --accent: #3b82f6;
+            --card-bg: rgba(30, 41, 59, 0.8);
+            --taskbar: rgba(15, 23, 42, 0.9);
+            --window-header: #1e293b;
+            --window-border: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Add fade-in animation keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* OS Desktop Styles with animation */
+        .os-desktop {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            padding: 1rem;
+            padding-bottom: 4rem;
+            overflow: hidden;
+            z-index: 1;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Add animation to desktop icons */
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: slideUpFade 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        /* Stagger the animation for each icon */
+        .desktop-icon:nth-child(1) { animation-delay: 0.1s; }
+        .desktop-icon:nth-child(2) { animation-delay: 0.2s; }
+        .desktop-icon:nth-child(3) { animation-delay: 0.3s; }
+        .desktop-icon:nth-child(4) { animation-delay: 0.4s; }
+        .desktop-icon:nth-child(5) { animation-delay: 0.5s; }
+        .desktop-icon:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Add animation to taskbar */
+        .os-taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3.5rem;
+            background: var(--taskbar);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            animation: slideUpFade 0.8s ease-out;
+            animation-delay: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        .os-start {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .os-start:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .os-start i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .os-taskbar-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .taskbar-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .taskbar-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .taskbar-icon i {
+            font-size: 1.25rem;
+            color: var(--text);
+        }
+
+        .os-time {
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        /* Desktop Icons */
+        .desktop-icons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
+            max-width: 1600px;
+        }
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .desktop-icon:hover {
+            transform: scale(1.05);
+        }
+
+        .icon-container {
+            width: 4rem;
+            height: 4rem;
+            border-radius: 1rem;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .desktop-icon:hover .icon-container {
+            border-color: var(--primary);
+        }
+
+        .icon-container i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .icon-label {
+            font-size: 0.875rem;
+            color: var(--text);
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* App Windows */
+        .app-window {
+            position: absolute;
+            width: 80%;
+            max-width: 800px;
+            height: 70%;
+            max-height: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid var(--window-border);
+            display: none;
+        }
+
+        .window-header {
+            background: var(--window-header);
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .window-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .window-title i {
+            color: var(--primary);
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .window-control {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-close {
+            background: #ef4444;
+        }
+
+        .control-minimize {
+            background: #f59e0b;
+        }
+
+        .control-maximize {
+            background: #10b981;
+        }
+
+        .window-content {
+            padding: 1.5rem;
+            height: calc(100% - 3rem);
+            overflow-y: auto;
+        }
+
+        .app-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .app-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .app-icon {
+            width: 4rem;
+            height: 4rem;
+            background: var(--primary);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .app-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .app-details h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .app-details p {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .app-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .app-tag {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+        }
+
+        .app-screenshots {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .app-screenshots h3 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+
+        .screenshot-placeholder {
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary);
+        }
+
+        /* Back to BIOS button */
+        .reboot-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .reboot-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .reboot-button i {
+            font-size: 1rem;
+        }
+
+        /* Welcome Animation Styles */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #232323;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .welcome-content {
+            text-align: center;
+        }
+
+        .welcome-logo {
+            width: 200px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: scale(0.9);
+            animation: logoAppear 1s ease forwards;
+        }
+
+        .welcome-message {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: messageAppear 1s ease forwards;
+            animation-delay: 1s;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2s;
+        }
+
+        .system-info {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        @keyframes logoAppear {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes mainContentAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-window {
+                width: 95%;
+                height: 80%;
+            }
+
+            .desktop-icons {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            }
+
+            .os-taskbar {
+                padding: 0 1rem;
+            }
+
+            .os-start span {
+                display: none;
+            }
+        }
+
+        /* Map Links Styling */
+        .map-categories {
+            margin-top: 1.5rem;
+        }
+        
+        .map-categories h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .map-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .map-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .map-link:hover {
+            background: rgba(37, 99, 235, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .map-link-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .map-link-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .map-link-details h4 {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+        
+        .map-link-details p {
+            font-size: 0.875rem;
+            color: var(--secondary);
+        }
+
+        /* Contact Info Styling */
+        .contact-info {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .contact-item:hover {
+            background: rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .contact-item i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+        
+        .contact-item span {
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas" style="opacity: 0; transition: opacity 1s ease;"></canvas>
+    <div class="os-desktop">
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="lowballer">
+                <div class="icon-container">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="icon-label">Lowballer AI</div>
+            </div>
+            <div class="desktop-icon" data-app="vim">
+                <div class="icon-container">
+                    <i class="fas fa-keyboard"></i>
+                </div>
+                <div class="icon-label">Vim Teacher</div>
+            </div>
+            <div class="desktop-icon" data-app="cms">
+                <div class="icon-container">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <div class="icon-label">Multi-Platform CMS</div>
+            </div>
+            <div class="desktop-icon" data-app="about">
+                <div class="icon-container">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="icon-label">About Me</div>
+            </div>
+            <div class="desktop-icon" data-app="contact">
+                <div class="icon-container">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="icon-label">Contact</div>
+            </div>
+            <div class="desktop-icon" data-app="maps">
+                <div class="icon-container">
+                    <i class="fas fa-map-location-dot"></i>
+                </div>
+                <div class="icon-label">Istanbul Maps</div>
+            </div>
+            <div class="desktop-icon" data-app="fidelio">
+                <div class="icon-container">
+                    <i class="fas fa-code"></i>
+                </div>
+                <div class="icon-label">Fidelio</div>
+            </div>
+        </div>
+
+        <!-- App Windows -->
+        <div class="app-window" id="lowballer-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-robot"></i>
+                    <span>Lowballer AI</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Lowballer AI</h2>
+                            <p>AI system for automated second-hand goods trading, monitoring markets for price inefficiencies</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Python</span>
+                                <span class="app-tag">AI</span>
+                                <span class="app-tag">FastAPI</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-screenshots">
+                        <h3>Project Screenshots</h3>
+                        <div class="screenshot-placeholder">
+                            Screenshot preview
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="vim-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-keyboard"></i>
+                    <span>Vim Teacher</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Vim Teacher</h2>
+                            <p>Interactive Vim learning platform with gamified experience</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Kotlin</span>
+                                <span class="app-tag">Android</span>
+                                <span class="app-tag">Firebase</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-screenshots">
+                        <h3>Project Screenshots</h3>
+                        <div class="screenshot-placeholder">
+                            Screenshot preview
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="cms-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Multi-Platform CMS</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Multi-Platform CMS</h2>
+                            <p>Unified social media posting system with integrated APIs</p>
+                            <div class="app-tags">
+                                <span class="app-tag">React</span>
+                                <span class="app-tag">Node.js</span>
+                                <span class="app-tag">TypeScript</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-screenshots">
+                        <h3>Project Screenshots</h3>
+                        <div class="screenshot-placeholder">
+                            Screenshot preview
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="about-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-user"></i>
+                    <span>About Me</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Ata Tan DAGIDIR</h2>
+                            <p>Full Stack Developer & Industrial Designer</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Istanbul, Türkiye</span>
+                                <span class="app-tag">Ozyegin University</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>I'm a passionate developer with a unique blend of technical and design skills. My background in industrial design gives me a unique perspective on creating intuitive and beautiful digital experiences.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="contact-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Get in Touch</h2>
+                            <p>Feel free to reach out for collaborations or just a friendly chat</p>
+                        </div>
+                    </div>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>ata@atadag.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <span>github.com/atadag</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <span>linkedin.com/in/atadag</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="maps-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-map-location-dot"></i>
+                    <span>Istanbul Maps</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-map-location-dot"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Istanbul Maps</h2>
+                            <p>Interactive maps of Istanbul with various data layers</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Leaflet.js</span>
+                                <span class="app-tag">GeoJSON</span>
+                                <span class="app-tag">JavaScript</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-categories">
+                        <h3>Available Maps</h3>
+                        <div class="map-links">
+                            <a href="maps/maps-code/business-map.html" class="map-link">
+                                <div class="map-link-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="map-link-details">
+                                    <h4>Business Centers</h4>
+                                    <p>Explore business centers across Istanbul</p>
+                                </div>
+                            </a>
+                            <a href="maps/maps-code/construction-map.html" class="map-link">
+                                <div class="map-link-icon">
+                                    <i class="fas fa-hard-hat"></i>
+                                </div>
+                                <div class="map-link-details">
+                                    <h4>Construction Map</h4>
+                                    <p>View ongoing construction projects</p>
+                                </div>
+                            </a>
+                            <a href="maps/maps-code/crime-map.html" class="map-link">
+                                <div class="map-link-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="map-link-details">
+                                    <h4>Crime Map</h4>
+                                    <p>Safety information and incident reports</p>
+                                </div>
+                            </a>
+                            <a href="maps/maps-code/crash-map.html" class="map-link">
+                                <div class="map-link-icon">
+                                    <i class="fas fa-car-crash"></i>
+                                </div>
+                                <div class="map-link-details">
+                                    <h4>Crash Map</h4>
+                                    <p>Traffic accident data and statistics</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="fidelio-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-code"></i>
+                    <span>Fidelio</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>Fidelio Software</h2>
+                            <p>Innovative software solutions for modern businesses</p>
+                            <div class="app-tags">
+                                <span class="app-tag">Software Development</span>
+                                <span class="app-tag">Custom Solutions</span>
+                                <span class="app-tag">Enterprise Software</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p>Fidelio is a cutting-edge software company specializing in developing tailored solutions for businesses of all sizes. Our team of expert developers creates innovative applications that help organizations streamline their operations and achieve their goals.</p>
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Visit Our Website</h3>
+                        <a href="https://fidelioware.com" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: var(--primary); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 600; transition: all 0.3s;">
+                            <i class="fas fa-external-link-alt" style="margin-right: 0.5rem;"></i>
+                            fidelioware.com
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="os-taskbar">
+            <div class="os-start">
+                <i class="fas fa-microchip"></i>
+                <span>ATADAG</span>
+            </div>
+            <div class="os-taskbar-icons">
+                <div class="taskbar-icon" data-app="lowballer">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="taskbar-icon" data-app="vim">
+                    <i class="fas fa-keyboard"></i>
+                </div>
+                <div class="taskbar-icon" data-app="cms">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <div class="taskbar-icon" data-app="maps">
+                    <i class="fas fa-map-location-dot"></i>
+                </div>
+                <div class="taskbar-icon" data-app="fidelio">
+                    <i class="fas fa-code"></i>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <a href="index.html" class="reboot-button">
+                    <i class="fas fa-power-off"></i>
+                    <span>REBOOT</span>
+                </a>
+                <div class="os-time" id="os-clock">00:00</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Three.js Background Animation
+        function initThreeBackground() {
+            const canvas = document.getElementById('bg-canvas');
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            // Create particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 500; // Reduced for performance
+            const posArray = new Float32Array(particlesCount * 3);
+            const velocityArray = new Float32Array(particlesCount);
+            
+            // Initialize particles with random positions and velocities
+            for(let i = 0; i < particlesCount; i++) {
+                posArray[i * 3] = (Math.random() - 0.5) * 100; // x
+                posArray[i * 3 + 1] = (Math.random() - 0.5) * 100; // y
+                posArray[i * 3 + 2] = (Math.random() - 0.5) * 50; // z
+                velocityArray[i] = Math.random() * 0.05 + 0.02; // Random fall speed
+            }
+            
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            const particlesMaterial = new THREE.PointsMaterial({
+                size: 0.3,
+                color: '#2563eb',
+                transparent: true,
+                opacity: 0.6,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+            scene.add(particlesMesh);
+
+            // Mouse movement effect
+            let mouseX = 0;
+            let mouseY = 0;
+            
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const positions = particlesGeometry.attributes.position.array;
+
+                // Update particle positions
+                for(let i = 0; i < particlesCount; i++) {
+                    // Update y position (falling)
+                    positions[i * 3 + 1] -= velocityArray[i];
+
+                    // Reset particle if it falls below view
+                    if(positions[i * 3 + 1] < -50) {
+                        positions[i * 3 + 1] = 50; // Reset to top
+                        positions[i * 3] = (Math.random() - 0.5) * 100; // Random x position
+                        positions[i * 3 + 2] = (Math.random() - 0.5) * 50; // Random z position
+                    }
+                }
+
+                particlesGeometry.attributes.position.needsUpdate = true;
+
+                // Very subtle rotation based on mouse position
+                particlesMesh.rotation.x += mouseY * 0.00001;
+                particlesMesh.rotation.y += mouseX * 0.00001;
+
+                renderer.render(scene, camera);
+            }
+
+            // Handle resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Start animation
+            animate();
+
+            // Fade in canvas immediately instead of after welcome screen
+            canvas.style.opacity = '1';
+        }
+
+        // Welcome screen handling
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize Three.js background
+            initThreeBackground();
+            
+            // Fade in the canvas with a slight delay
+            setTimeout(() => {
+                document.getElementById('bg-canvas').style.opacity = '1';
+            }, 300);
+
+            // OS Clock
+            function updateClock() {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                document.getElementById('os-clock').textContent = `${hours}:${minutes}`;
+            }
+            
+            updateClock();
+            setInterval(updateClock, 60000);
+
+            // Window management
+            const desktopIcons = document.querySelectorAll('.desktop-icon');
+            const taskbarIcons = document.querySelectorAll('.taskbar-icon');
+            const closeButtons = document.querySelectorAll('.control-close');
+            let activeWindow = null;
+
+            function openApp(appId) {
+                // Close any open window
+                if (activeWindow) {
+                    document.getElementById(activeWindow).style.display = 'none';
+                }
+                
+                // Open the selected app
+                const appWindow = document.getElementById(`${appId}-app`);
+                if (appWindow) {
+                    appWindow.style.display = 'block';
+                    activeWindow = `${appId}-app`;
+                    
+                    // Make draggable
+                    makeDraggable(appWindow);
+                }
+            }
+
+            desktopIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const appId = icon.getAttribute('data-app');
+                    openApp(appId);
+                });
+            });
+
+            taskbarIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const appId = icon.getAttribute('data-app');
+                    openApp(appId);
+                });
+            });
+
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const appWindow = button.closest('.app-window');
+                    if (appWindow) {
+                        appWindow.style.display = 'none';
+                        activeWindow = null;
+                    }
+                });
+            });
+
+            // Make windows draggable
+            function makeDraggable(element) {
+                const header = element.querySelector('.window-header');
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                
+                header.onmousedown = dragMouseDown;
+                
+                function dragMouseDown(e) {
+                    e.preventDefault();
+                    // Get mouse position at startup
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    // Call function when mouse moves
+                    document.onmousemove = elementDrag;
+                }
+                
+                function elementDrag(e) {
+                    e.preventDefault();
+                    // Calculate new position
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    // Set element's new position
+                    element.style.top = (element.offsetTop - pos2) + "px";
+                    element.style.left = (element.offsetLeft - pos1) + "px";
+                }
+                
+                function closeDragElement() {
+                    // Stop moving when mouse button is released
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                }
+            }
+        });
+    </script>
+</body>
+</html> 
