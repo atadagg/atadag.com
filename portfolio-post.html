@@ -609,6 +609,21 @@
             background: #1d4ed8;
             transform: translateY(-2px);
         }
+        
+        .social-links a:hover {
+            color: #1d4ed8;
+            transform: translateY(-3px);
+        }
+        
+        .contact-link {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .contact-link:hover {
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -802,6 +817,20 @@
                         </div>
                     </div>
                     <p>I'm a passionate developer focused on AI and Computer Science. With strong skills in algorithms, data structures, and machine learning, I create innovative solutions that leverage cutting-edge technology. My research interests include NLP and human-computer interaction.</p>
+                    <div class="social-links" style="display: flex; gap: 1rem; margin-top: 1rem; justify-content: center;">
+                        <a href="https://github.com/atadagg" target="_blank" style="color: var(--primary); font-size: 1.5rem; transition: all 0.3s;">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/ata-dagidir" target="_blank" style="color: var(--primary); font-size: 1.5rem; transition: all 0.3s;">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/atadawg" target="_blank" style="color: var(--primary); font-size: 1.5rem; transition: all 0.3s;">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="mailto:atadagidir@gmail.com" style="color: var(--primary); font-size: 1.5rem; transition: all 0.3s;">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                     <div class="download-cv-container">
                         <a href="assets/Ata_Tan_DAGIDIR_CV.pdf" download="Ata_Tan_DAGIDIR_CV.pdf" class="download-cv-btn">
                             <i class="fas fa-download"></i> Download CV
@@ -837,15 +866,19 @@
                     <div class="contact-info">
                         <div class="contact-item">
                             <i class="fas fa-envelope"></i>
-                            <span>atadagidir@gmail.com</span>
+                            <span><a href="mailto:atadagidir@gmail.com" class="contact-link">atadagidir@gmail.com</a></span>
                         </div>
                         <div class="contact-item">
                             <i class="fab fa-github"></i>
-                            <span>github.com/atadagg</span>
+                            <span><a href="https://github.com/atadagg" target="_blank" class="contact-link">github.com/atadagg</a></span>
                         </div>
                         <div class="contact-item">
                             <i class="fab fa-linkedin"></i>
-                            <span>linkedin.com/in/ata-dagidir</span>
+                            <span><a href="https://linkedin.com/in/ata-dagidir" target="_blank" class="contact-link">linkedin.com/in/ata-dagidir</a></span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-twitter"></i>
+                            <span><a href="https://x.com/atadawg" target="_blank" class="contact-link">x.com/atadawg</a></span>
                         </div>
                     </div>
                 </div>

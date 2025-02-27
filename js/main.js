@@ -7,7 +7,8 @@ const cvData = {
   website: 'https://www.fidelioware.com/',
   social_networks: [
     { network: 'GitHub', username: 'atadagg' },
-    { network: 'LinkedIn', username: 'ata-dagidir' }
+    { network: 'LinkedIn', username: 'ata-dagidir' },
+    { network: 'Twitter', username: 'atadawg' }
   ],
   education: [
     {
@@ -351,6 +352,13 @@ function populateContact() {
     if (linkedin) {
         const linkedinElement = document.getElementById('contact-linkedin');
         linkedinElement.innerHTML = `<a href="https://linkedin.com/in/${linkedin.username}" target="_blank" class="contact-link">linkedin.com/in/${linkedin.username}</a>`;
+    }
+
+    // Create Twitter link
+    const twitter = cvData.social_networks.find(network => network.network === 'Twitter');
+    if (linkedin) {
+        const linkedinElement = document.getElementById('contact-twitter');
+        linkedinElement.innerHTML = `<a href="https://x.com/${twitter.username}" target="_blank" class="contact-link">x.com/${twitter.username}</a>`;
     }
 }
 
