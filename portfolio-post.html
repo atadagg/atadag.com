@@ -89,6 +89,8 @@
         .desktop-icon:nth-child(6) { animation-delay: 0.6s; }
         .desktop-icon:nth-child(7) { animation-delay: 0.7s; }
         .desktop-icon:nth-child(8) { animation-delay: 0.8s; }
+        .desktop-icon:nth-child(9) { animation-delay: 0.9s; }
+
 
 
         /* Add animation to taskbar */
@@ -715,6 +717,12 @@
                 </div>
                 <div class="icon-label">Hotel Management</div>
             </div>
+            <div class="desktop-icon" data-app="greenpass">
+                <div class="icon-container">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <div class="icon-label">GreenPass</div>
+            </div>
             <div class="desktop-icon" data-app="about">
                 <div class="icon-container">
                     <i class="fas fa-user"></i>
@@ -927,6 +935,82 @@
                         </div>
                         <div class="screenshot-container">
                             <img src="assets/hotel-screenshot-2.png" alt="Hotel Management System Dashboard" class="project-screenshot">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-window" id="greenpass-app">
+            <div class="window-header">
+                <div class="window-title">
+                    <i class="fas fa-plane"></i>
+                    <span>GreenPass</span>
+                </div>
+                <div class="window-controls">
+                    <div class="window-control control-minimize"></div>
+                    <div class="window-control control-maximize"></div>
+                    <div class="window-control control-close"></div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div class="app-info">
+                    <div class="app-header">
+                        <div class="app-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="app-details">
+                            <h2>GreenPass</h2>
+                            <p>Sustainable flight rewards app for eco-conscious travelers</p>
+                            <div class="app-links">
+                                <a href="https://github.com/EmircanKartal/Greenpass" class="github-link" target="_blank">
+                                    <i class="fab fa-github"></i> View on GitHub
+                                </a>
+                                <a href="https://drive.google.com/file/d/1MV1K2rh_TzdQHVynPTAyW-broMQ9r1_N/view?usp=sharing" class="github-link" target="_blank" style="margin-left: 10px;">
+                                    <i class="fas fa-file-powerpoint"></i> View Presentation
+                                </a>
+                            </div>
+                            <div class="app-tags">
+                                <span class="app-tag">React Native</span>
+                                <span class="app-tag">Hackathon</span>
+                                <span class="app-tag">Sustainability</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-description">
+                        <h3>About the Project</h3>
+                        <p>GreenPass is a mobile application developed for a hackathon where we reached the finals. The app encourages sustainable travel by rewarding eco-conscious flight choices. Key features include:</p>
+                        <ul style="list-style-type: none; padding-left: 0; margin-top: 10px;">
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-leaf" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>Sustainable Flights:</strong> Choose flights with lower carbon footprints to protect the environment.</span>
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-award" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>EcoPoint System:</strong> Earn rewards for environmentally friendly choices.</span>
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-user-circle" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>User Profile:</strong> Track your sustainability level and earn badges.</span>
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-ticket-alt" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>PNR Integration:</strong> Add your ticket information to earn EcoPoints.</span>
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-level-up-alt" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>Level Up:</strong> Choose eco-friendly flights to earn EcoPoints, spend them in the store, and increase your benefits.</span>
+                            </li>
+                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start;">
+                                <i class="fas fa-gift" style="color: #10b981; margin-right: 10px; margin-top: 3px;"></i>
+                                <span><strong>Use Rewards:</strong> Enjoy lounge access, fast track passage, and special gifts to enhance your travel experience.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="app-screenshots">
+                        <h3>Project Screenshots</h3>
+                        <div class="screenshot-container">
+                            <img src="assets/greenpass-screenshot.png" alt="GreenPass App Interface" class="project-screenshot">
                         </div>
                     </div>
                 </div>
@@ -1160,6 +1244,9 @@
                 </div>
                 <div class="taskbar-icon" data-app="hotel">
                     <i class="fas fa-hotel"></i>
+                </div>
+                <div class="taskbar-icon" data-app="greenpass">
+                    <i class="fas fa-plane"></i>
                 </div>
                 <div class="taskbar-icon" data-app="maps">
                     <i class="fas fa-map-location-dot"></i>
