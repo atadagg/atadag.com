@@ -199,13 +199,13 @@ document.addEventListener('keydown', (e) => {
             break;
         case 'Escape':
             e.preventDefault();
-            // Return to main menu
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            document.getElementById('about').classList.remove('hidden');
-            currentMenuIndex = 0;
-            updateActiveMenuItem();
+            // Return to boot menu (index.html)
+            window.location.href = 'index.html';
+            break;
+        case 'F5':
+            e.preventDefault();
+            // Refresh the system (reload the page)
+            window.location.reload();
             break;
     }
 });
@@ -327,18 +327,30 @@ function populateAbout() {
 
 // Populate Contact section
 function populateContact() {
-    document.getElementById('contact-email').textContent = cvData.email;
-    document.getElementById('contact-phone').textContent = cvData.phone;
-    document.getElementById('contact-website').textContent = cvData.website;
+    // Create email link
+    const emailElement = document.getElementById('contact-email');
+    emailElement.innerHTML = `<a href="mailto:${cvData.email}" class="contact-link">${cvData.email}</a>`;
     
+    // Create phone link
+    const phoneElement = document.getElementById('contact-phone');
+    phoneElement.innerHTML = `<a href="tel:${cvData.phone}" class="contact-link">${cvData.phone}</a>`;
+    
+    // Create website link
+    const websiteElement = document.getElementById('contact-website');
+    websiteElement.innerHTML = `<a href="${cvData.website}" target="_blank" class="contact-link">${cvData.website}</a>`;
+    
+    // Create GitHub link
     const github = cvData.social_networks.find(network => network.network === 'GitHub');
     if (github) {
-        document.getElementById('contact-github').textContent = `github.com/${github.username}`;
+        const githubElement = document.getElementById('contact-github');
+        githubElement.innerHTML = `<a href="https://github.com/${github.username}" target="_blank" class="contact-link">github.com/${github.username}</a>`;
     }
     
+    // Create LinkedIn link
     const linkedin = cvData.social_networks.find(network => network.network === 'LinkedIn');
     if (linkedin) {
-        document.getElementById('contact-linkedin').textContent = `linkedin.com/in/${linkedin.username}`;
+        const linkedinElement = document.getElementById('contact-linkedin');
+        linkedinElement.innerHTML = `<a href="https://linkedin.com/in/${linkedin.username}" target="_blank" class="contact-link">linkedin.com/in/${linkedin.username}</a>`;
     }
 }
 
@@ -380,6 +392,17 @@ function startupSequence() {
     }, 500);
 }
 
+// Function to download CV
+function downloadCV() {
+    // Create a link to download the CV
+    const link = document.createElement('a');
+    link.href = 'assets/Ata_Tan_DAGIDIR_CV.pdf';
+    link.download = 'Ata_Tan_DAGIDIR_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.screen').style.opacity = '0';
@@ -392,4 +415,10 @@ document.addEventListener('DOMContentLoaded', () => {
     populateCertifications();
     populateContact();
     updateActiveMenuItem();
+
+    // Add click event for download CV button
+    const downloadCvButton = document.querySelector('.download-cv');
+    if (downloadCvButton) {
+        downloadCvButton.addEventListener('click', downloadCV);
+    }
 }); 

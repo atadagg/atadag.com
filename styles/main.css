@@ -490,4 +490,41 @@ body {
 .certification-date,
 .certification-skills {
     margin-bottom: 5px;
+}
+
+/* Contact links styling */
+.contact-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+    position: relative;
+}
+
+.contact-link:hover {
+    color: #ffffff;
+}
+
+.contact-link:hover::after {
+    content: '►';
+    position: absolute;
+    right: -15px;
+    animation: blink 1s infinite;
+}
+
+/* Download CV button styling */
+.download-cv {
+    color: var(--text-secondary);
+    cursor: pointer;
+    position: relative;
+}
+
+.download-cv:hover {
+    color: #ffffff;
+}
+
+.download-cv:hover::after {
+    content: '►';
+    position: absolute;
+    right: -15px;
+    animation: blink 1s infinite;
 } 
