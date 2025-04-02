@@ -90,6 +90,7 @@
         .desktop-icon:nth-child(7) { animation-delay: 0.7s; }
         .desktop-icon:nth-child(8) { animation-delay: 0.8s; }
         .desktop-icon:nth-child(9) { animation-delay: 0.9s; }
+        .desktop-icon:nth-child(10) { animation-delay: 1.0s; }
 
 
 
@@ -693,6 +694,12 @@
     <canvas id="bg-canvas" style="opacity: 0; transition: opacity 1s ease;"></canvas>
     <div class="os-desktop">
         <div class="desktop-icons">
+            <div class="desktop-icon" data-app="latest-projects">
+                <div class="icon-container">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="icon-label">Latest Projects</div>
+            </div>
             <div class="desktop-icon" data-app="lowballer">
                 <div class="icon-container">
                     <i class="fas fa-robot"></i>
@@ -1233,6 +1240,9 @@
                 <span>ATADAG</span>
             </div>
             <div class="os-taskbar-icons">
+                <div class="taskbar-icon" data-app="latest-projects">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
                 <div class="taskbar-icon" data-app="lowballer">
                     <i class="fas fa-robot"></i>
                 </div>
@@ -1402,14 +1412,22 @@
             desktopIcons.forEach(icon => {
                 icon.addEventListener('click', () => {
                     const appId = icon.getAttribute('data-app');
-                    openApp(appId);
+                    if (appId === 'latest-projects') {
+                        window.location.href = 'latest-projects.html'; // Navigate to new page
+                    } else {
+                        openApp(appId);
+                    }
                 });
             });
 
             taskbarIcons.forEach(icon => {
                 icon.addEventListener('click', () => {
                     const appId = icon.getAttribute('data-app');
-                    openApp(appId);
+                    if (appId === 'latest-projects') {
+                        window.location.href = 'latest-projects.html'; // Navigate if it's the latest projects icon
+                    } else {
+                        openApp(appId);
+                    }
                 });
             });
 

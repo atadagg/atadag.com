@@ -646,6 +646,12 @@
 
     <div class="os-desktop">
         <div class="desktop-icons">
+            <div class="desktop-icon" data-app="latest-projects">
+                <div class="icon-container">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <div class="icon-label">Latest Projects</div>
+            </div>
             <div class="desktop-icon" data-app="lowballer">
                 <div class="icon-container">
                     <i class="fas fa-robot"></i>
@@ -1186,6 +1192,9 @@
                 <span>ATADAG</span>
             </div>
             <div class="os-taskbar-icons">
+                <div class="taskbar-icon" data-app="latest-projects">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
                 <div class="taskbar-icon" data-app="lowballer">
                     <i class="fas fa-robot"></i>
                 </div>
@@ -1363,14 +1372,22 @@
             desktopIcons.forEach(icon => {
                 icon.addEventListener('click', () => {
                     const appId = icon.getAttribute('data-app');
-                    openApp(appId);
+                    if (appId === 'latest-projects') {
+                        window.location.href = 'latest-projects.html';
+                    } else {
+                        openApp(appId);
+                    }
                 });
             });
 
             taskbarIcons.forEach(icon => {
                 icon.addEventListener('click', () => {
                     const appId = icon.getAttribute('data-app');
-                    openApp(appId);
+                    if (appId === 'latest-projects') {
+                        window.location.href = 'latest-projects.html';
+                    } else {
+                        openApp(appId);
+                    }
                 });
             });
 
