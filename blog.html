@@ -284,25 +284,29 @@
                     throw new Error('CMS.js library not loaded');
                 }
                 
-                var config = {
-                    base_url: '',
-                    file_location: 'posts',
-                    extension: '.md',
-                    site_title: 'atadag\'s Blog',
+                const config = {
                     elementId: 'cms',
-                    posts_per_page: 5,
-                    date_format: 'MMMM DD, YYYY',
+                    layoutDirectory: 'layouts',
                     defaultView: 'posts',
-                    layoutDirectory: null,
+                    errorLayout: 'error',
+                    mode: 'GITHUB',             // Use GitHub mode
+                    github: {
+                        username: 'atadagg',
+                        repo: 'atadag.com',
+                        branch: 'main',
+                        // No prefix needed as 'posts' is at the root
+                        host: 'https://api.github.com' // Default, usually not needed unless GitHub Enterprise
+                    },
                     types: [
                         {
-                            name: 'posts',
+                            name: 'posts',          // Matches the directory name in GitHub
                             layout: {
-                                list: 'default',
-                                single: 'post'
+                                list: 'default',    // Layout for the list view (e.g., layouts/default.html)
+                                single: 'post'      // Layout for a single post view (e.g., layouts/post.html)
                             }
                         }
-                    ]
+                    ],
+                    debug: true // Keep debug on for now
                 };
                 
                 console.log('CMS.js config:', config);
