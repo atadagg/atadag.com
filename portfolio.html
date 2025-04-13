@@ -646,6 +646,12 @@
 
     <div class="os-desktop">
         <div class="desktop-icons">
+            <div class="desktop-icon" data-app="writings">
+                <div class="icon-container">
+                    <i class="fas fa-pen"></i>
+                </div>
+                <div class="icon-label">Writings</div>
+            </div>
             <div class="desktop-icon" data-app="latest-projects">
                 <div class="icon-container">
                     <i class="fas fa-lightbulb"></i>
@@ -1374,6 +1380,8 @@
                     const appId = icon.getAttribute('data-app');
                     if (appId === 'latest-projects') {
                         window.location.href = 'latest-projects.html';
+                    } else if (appId === 'writings') {
+                        window.location.href = '/posts';
                     } else {
                         openApp(appId);
                     }
@@ -1385,6 +1393,8 @@
                     const appId = icon.getAttribute('data-app');
                     if (appId === 'latest-projects') {
                         window.location.href = 'latest-projects.html';
+                    } else if (appId === 'writings') {
+                        window.location.href = '/posts';
                     } else {
                         openApp(appId);
                     }
