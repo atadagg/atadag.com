@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .post-list {
+            list-style: none;
+            padding: 0;
+        }
+        .post-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .post-title {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        .post-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <ul class="post-list">
+        {{#each posts}}
+        <li class="post-item">
+            <a href="{{url}}" class="post-title">{{title}}</a>
+            <div class="post-date">{{date}}</div>
+        </li>
+        {{/each}}
+    </ul>
+</body>
+</html> 
