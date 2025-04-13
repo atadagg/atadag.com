@@ -285,15 +285,15 @@
                 }
                 
                 var config = {
-                    base_url: '',
-                    file_location: 'posts',
+                    base_url: window.location.origin,
+                    file_location: '/posts',
                     extension: '.md',
                     site_title: 'atadag\'s Blog',
                     elementId: 'cms',
                     posts_per_page: 5,
                     date_format: 'MMMM DD, YYYY',
                     defaultView: 'posts',
-                    layoutDirectory: 'layouts',
+                    layoutDirectory: '/layouts',
                     types: [
                         {
                             name: 'posts',
@@ -314,10 +314,19 @@
                 // Add more detailed logging
                 console.log('CMS instance:', blog);
                 console.log('Checking posts directory...');
-                fetch('posts/organizations.md')
-                    .then(response => response.text())
-                    .then(text => console.log('Sample post content:', text))
-                    .catch(error => console.error('Error fetching post:', error));
+                
+                // Test if we can access the files
+                Promise.all([
+                    fetch('/posts/organizations.md').then(r => r.text()),
+                    fetch('/layouts/default.html').then(r => r.text()),
+                    fetch('/layouts/post.html').then(r => r.text())
+                ]).then(([post, defaultLayout, postLayout]) => {
+                    console.log('Post content:', post.substring(0, 100) + '...');
+                    console.log('Default layout:', defaultLayout.substring(0, 100) + '...');
+                    console.log('Post layout:', postLayout.substring(0, 100) + '...');
+                }).catch(error => {
+                    console.error('Error fetching files:', error);
+                });
                 
                 console.log('CMS.js initialized successfully');
             } catch (error) {
