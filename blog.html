@@ -302,13 +302,23 @@
                                 single: 'post'
                             }
                         }
-                    ]
+                    ],
+                    debug: true
                 };
                 
                 console.log('CMS.js config:', config);
                 
                 // Initialize CMS
                 var blog = new CMS(config);
+                
+                // Add debug event listeners
+                blog.on('loaded', function(data) {
+                    console.log('CMS loaded data:', data);
+                });
+                
+                blog.on('error', function(error) {
+                    console.error('CMS error:', error);
+                });
                 
                 console.log('CMS.js initialized successfully');
             } catch (error) {
