@@ -311,14 +311,13 @@
                 // Initialize CMS
                 var blog = new CMS(config);
                 
-                // Add debug event listeners
-                blog.on('loaded', function(data) {
-                    console.log('CMS loaded data:', data);
-                });
-                
-                blog.on('error', function(error) {
-                    console.error('CMS error:', error);
-                });
+                // Add more detailed logging
+                console.log('CMS instance:', blog);
+                console.log('Checking posts directory...');
+                fetch('posts/organizations.md')
+                    .then(response => response.text())
+                    .then(text => console.log('Sample post content:', text))
+                    .catch(error => console.error('Error fetching post:', error));
                 
                 console.log('CMS.js initialized successfully');
             } catch (error) {
